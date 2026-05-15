@@ -1,0 +1,324 @@
+{
+  "version": "1.0.0",
+  "description": "MCP Server Registry for Agent Architect",
+  "servers": {
+    "gmail": {
+      "name": "Gmail MCP Server",
+      "package": "@gongrzhe/server-gmail-autoauth-mcp@1.1.11",
+      "type": "nodejs",
+      "image": "mcp-gmail:latest",
+      "accounts": ["board", "personal"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gmail-{account}/",
+        "required": ["gcp-oauth.keys.json"],
+        "generated": ["token.json"]
+      },
+      "wrapper_pattern": "mcp-gmail-{account}.sh",
+      "status": "active"
+    },
+    "gdrive": {
+      "name": "Google Drive MCP Server",
+      "package": "@isaacphi/mcp-gdrive@0.2.0",
+      "type": "nodejs",
+      "image": "mcp-gdrive:latest",
+      "accounts": ["board", "personal"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gdrive-{account}/",
+        "required": ["gcp-oauth.keys.json"],
+        "generated": ["credentials.json"]
+      },
+      "wrapper_pattern": "mcp-gdrive-{account}.sh",
+      "status": "deprecated",
+      "deprecated_date": "2026-01-25",
+      "deprecated_reason": "Replaced by local file access via Mac Google Drive sync for reduced overhead and increased speed"
+    },
+    "google-docs": {
+      "name": "Google Docs MCP Server",
+      "package": "google-docs-mcp@1.0.0",
+      "type": "nodejs",
+      "image": "mcp-google-docs:latest",
+      "accounts": ["default"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-google-docs/",
+        "required": ["credentials.json"],
+        "notes": "Requires client_id, client_secret, refresh_token in JSON"
+      },
+      "wrapper": "mcp-google-docs.sh",
+      "status": "active"
+    },
+    "powerpoint": {
+      "name": "PowerPoint MCP Server",
+      "package": "custom (python-pptx)",
+      "type": "python",
+      "version": "1.21.1",
+      "image": "powerpoint-mcp-server:latest",
+      "container_name": "powerpoint-mcp-server",
+      "transport": "streamable-http",
+      "port": 8001,
+      "url": "http://localhost:8001/mcp",
+      "accounts": ["default"],
+      "auth": "none",
+      "mounts": {
+        "templates": {
+          "host": "/Users/nickdemarco/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/templates",
+          "container": "/app/templates",
+          "mode": "ro"
+        },
+        "workspace": {
+          "host": "/Users/nickdemarco/Workspaces/mcp_servers/Office-PowerPoint-MCP-Server/workspace",
+          "container": "/app/workspace",
+          "mode": "rw"
+        }
+      },
+      "available_templates": [
+        "YourOrg_TEMPLATE.pptx",
+        "Altium_TEMPLATE.pptx"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "python",
+        "args": ["mcp-servers/images/powerpoint/ppt_server.py"]
+      },
+      "docker_config": {
+        "type": "streamable-http",
+        "url": "http://localhost:8001/mcp"
+      },
+      "tool_count": 37,
+      "status": "active"
+    },
+    "gtasks": {
+      "name": "Google Tasks MCP Server",
+      "package": "@brandcast_app/google-tasks-mcp@0.1.0",
+      "type": "nodejs",
+      "image": "mcp-gtasks:latest",
+      "accounts": ["default"],
+      "auth": "oauth",
+      "credentials": {
+        "pattern": "~/.config/mcp-gtasks/",
+        "required": [".env"],
+        "notes": "Requires GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN in .env file"
+      },
+      "wrapper": "mcp-gtasks.sh",
+      "status": "active"
+    },
+    "apple-mcp": {
+      "name": "Apple Events MCP Server",
+      "package": "mcp-server-apple-events",
+      "type": "nodejs",
+      "version": "1.3.0",
+      "repository": "https://github.com/FradSer/mcp-server-apple-events",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Uses macOS EventKit + Swift binaries for Reminders/Calendar. Grant permissions when prompted."
+      },
+      "capabilities": [
+        "Reminders: full CRUD with priorities, alarms, recurrence, location triggers, tags, subtasks",
+        "Calendar: create events, search, list (via EventKit)"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "mcp-server-apple-events"]
+      },
+      "platform": "macOS",
+      "status": "active",
+      "stars": 15,
+      "notes": [
+        "Actively maintained (431 commits, v1.3.0)",
+        "Swift-compiled binaries for performance-critical operations",
+        "AppleScript fallback for permissions handling",
+        "Covers Reminders + Calendar via EventKit",
+        "No Docker needed - runs via npx"
+      ]
+    },
+    "apple-contacts": {
+      "name": "Apple Contacts MCP Server",
+      "package": "contactbook (custom Swift build)",
+      "type": "swift",
+      "version": "0.1.0",
+      "repository": "https://github.com/RyanLisse/Contactbook",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Uses Apple Contacts framework via Swift. Grant permissions when prompted."
+      },
+      "capabilities": [
+        "Contacts: list, search, get, create, update, delete",
+        "Groups: list groups, view group members",
+        "Phone lookup: reverse phone number search"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "/Users/nickdemarco/Workspaces/Contactbook/.build/release/contactbook",
+        "args": ["mcp", "serve"]
+      },
+      "platform": "macOS",
+      "status": "active",
+      "stars": 1,
+      "notes": [
+        "Lightweight Contacts-only MCP server",
+        "Built in Swift with native Contacts framework",
+        "Full CRUD plus group management",
+        "No Docker needed - local binary"
+      ]
+    },
+    "openai-image": {
+      "name": "OpenAI Image Generation MCP Server (nickdnj fork w/ gpt-image-2)",
+      "package": "github:nickdnj/openai-image-mcp#feat/gpt-image-2",
+      "type": "nodejs",
+      "repository": "https://github.com/nickdnj/openai-image-mcp/tree/feat/gpt-image-2",
+      "upstream_repository": "https://github.com/lpenguin/openai-image-mcp",
+      "upstream_pr": "https://github.com/lpenguin/openai-image-mcp/pull/9",
+      "accounts": ["default"],
+      "auth": "api_key",
+      "credentials": {
+        "required": ["OPENAI_API_KEY"],
+        "notes": "Uses OPENAI_API_KEY environment variable. the user's Pro plan key is already in the shell environment."
+      },
+      "capabilities": [
+        "Image generation (gpt-image-2, gpt-image-1, gpt-image-1-mini, DALL-E 3, DALL-E 2)",
+        "gpt-image-2 thinking mode (low/medium/high) for charts, diagrams, multilingual text",
+        "Image editing (gpt-image-1)",
+        "Transparency support (gpt-image-1 only; gpt-image-2 is opaque/auto only)",
+        "Multiple output formats (PNG, JPEG, WebP)",
+        "Quality controls (low/medium/high/auto)",
+        "Size options (gpt-image-2 supports up to 2000px wide with new aspect ratios)"
+      ],
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "github:nickdnj/openai-image-mcp#feat/gpt-image-2"]
+      },
+      "status": "active",
+      "notes": [
+        "Running from nickdnj fork at feat/gpt-image-2 branch until upstream PR merges",
+        "Fork adds two tools: generate_image_gpt2 (standard) and generate_image_gpt2_thinking (reasoning mode)",
+        "thinking param shape (low/medium/high) derived from launch coverage — verify against OpenAI official spec before relying heavily",
+        "Upstream PR: https://github.com/lpenguin/openai-image-mcp/pull/9 — switch back to @lpenguin/openai-image-mcp on npm once merged + published",
+        "No Docker needed - runs via npx with prepare script triggering TypeScript build",
+        "API key inherited from environment"
+      ]
+    },
+    "video-editor": {
+      "name": "FFmpeg Video Editor MCP Server",
+      "package": "video-editor==0.1.0 (from GitHub)",
+      "type": "python",
+      "repository": "https://github.com/Kush36Agrawal/Video_Editor_MCP",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "Requires FFmpeg installed in system PATH (brew install ffmpeg)"
+      },
+      "capabilities": [
+        "Video trimming and cutting",
+        "Video merging and concatenation",
+        "Format conversion",
+        "Audio extraction and mixing",
+        "Image-to-video conversion (Ken Burns effects)",
+        "Subtitle integration",
+        "Basic filters (brightness, contrast, pan/zoom)"
+      ],
+      "install": "uv pip install 'git+https://github.com/Kush36Agrawal/Video_Editor_MCP.git'",
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "python",
+        "args": ["-c", "from video_editor.server import mcp; mcp.run(transport='stdio')"]
+      },
+      "status": "active",
+      "notes": [
+        "PyPI 'video-editor' package is a different tool - must install from GitHub",
+        "Entry point bug: use python -c import instead of 'video-editor' CLI",
+        "Wraps FFmpeg with natural language interface",
+        "Provides execute_ffmpeg tool",
+        "No Docker needed",
+        "Fallback: run ffmpeg directly via Bash"
+      ]
+    },
+    "voicemode": {
+      "name": "VoiceMode MCP Server",
+      "description": "Voice interaction via local speech-to-text (Whisper) and text-to-speech (Kokoro)",
+      "package": "voice-mode",
+      "type": "python-uvx",
+      "version": "latest",
+      "repository": "https://github.com/nicobailey/voice-mode",
+      "accounts": ["default"],
+      "auth": "none",
+      "credentials": {
+        "notes": "No credentials required. Models download automatically on first use (~1.5GB for Whisper)."
+      },
+      "capabilities": [
+        "Speech-to-text via Whisper (local)",
+        "Text-to-speech via Kokoro (local)",
+        "Voice conversation with wait_for_response control",
+        "Service management (start/stop/status)",
+        "Configurable voice, speed, and VAD settings"
+      ],
+      "install_command": "uvx voice-mode",
+      "claude_code_config": {
+        "type": "stdio",
+        "command": "uvx",
+        "args": ["voice-mode"]
+      },
+      "platform": "cross-platform",
+      "dependencies": ["Python 3.10+", "uv", "Microphone access", "Speaker/headphones"],
+      "status": "active",
+      "notes": [
+        "Models download on first use (~1.5GB for Whisper)",
+        "Windows may need PortAudio installed",
+        "No Docker needed - runs via uvx",
+        "Supports multiple TTS voices"
+      ]
+    },
+    "pdfscribe": {
+      "name": "PDFScribe MCP Server",
+      "description": "Transforms scanned PDFs into searchable Markdown with optional RAG ingestion",
+      "package": "custom (pdfscribe_cli)",
+      "type": "python",
+      "version": "2.1.0",
+      "image": "mcp-pdfscribe:latest",
+      "accounts": ["default"],
+      "auth": "api_key",
+      "credentials": {
+        "required_one_of": ["ANTHROPIC_API_KEY", "OPENAI_API_KEY"],
+        "optional": ["GOOGLE_DRIVE_CREDENTIALS", "RAG_DB_HOST", "RAG_DB_PASSWORD"],
+        "notes": "Supports both Anthropic (Claude Sonnet 4) and OpenAI (GPT-4o) for vision. Set AI_PROVIDER=openai to switch."
+      },
+      "capabilities": [
+        "PDF to Markdown transcription",
+        "Scanned/image-based PDF support",
+        "Intelligent caching with checksum validation",
+        "Local file system access",
+        "Handwriting recognition",
+        "Table extraction",
+        "RAG ingestion (chunk + embed + store)",
+        "Semantic search via pgvector",
+        "Multi-provider AI support (Anthropic/OpenAI)"
+      ],
+      "rag": {
+        "database": "pgvector (Postgres)",
+        "embeddings": "OpenAI text-embedding-3-small",
+        "chunk_size": 800,
+        "chunk_overlap": 120,
+        "tools": ["ingest_document", "search_documents", "list_indexed"]
+      },
+      "mounts": {
+        "cli": "/Users/nickdemarco/Workspaces/pdfscribe_cli",
+        "workspace": "~/.config/mcp-pdfscribe/workspace",
+        "outputs": "~/.config/mcp-pdfscribe/outputs"
+      },
+      "wrapper": "mcp-pdfscribe.sh",
+      "repository": "https://github.com/nickdnj/pdfscribe_cli",
+      "status": "active",
+      "stats": {
+        "pages_transcribed": 89,
+        "documents_processed": 7,
+        "avg_time_per_page": "5.5s",
+        "cache_speedup": "350x"
+      }
+    }
+  }
+}

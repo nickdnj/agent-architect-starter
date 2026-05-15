@@ -1,0 +1,78 @@
+{
+  "id": "wiki-ingest",
+  "name": "Wiki Ingest",
+  "description": "Sole writer to the wiki knowledge base. Owns ingest (raw to wiki), query-as-write (briefing to permanent page), and lint (contradictions, stale claims, orphans). Every operation produces a changelog or lint report.",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": [
+      "knowledge curation",
+      "wiki maintenance",
+      "cross-reference linking",
+      "drift detection"
+    ],
+    "capabilities": [
+      "ingest raw source material into curated pages",
+      "promote briefings to permanent wiki pages",
+      "lint for contradictions, stale claims, orphans",
+      "maintain changelog and lint audit trail",
+      "run 10-session sharpen-the-saw audits"
+    ]
+  },
+
+  "mcp_servers": [],
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/",
+      "teams/",
+      "projects/",
+      "raw/",
+      "_changelog/",
+      "_lint/",
+      "_archive/"
+    ],
+    "write_via_ingest": [
+      "spine/",
+      "teams/",
+      "projects/",
+      "_changelog/",
+      "_lint/",
+      "_archive/"
+    ],
+    "session_log": "teams/starter/_sessions/wiki-ingest/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "CLAUDE.md"
+    ]
+  },
+
+  "output": {
+    "folder": "outputs/",
+    "formats": ["markdown", "changelog", "lint-report"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": [
+      "setup-concierge",
+      "researcher",
+      "writer"
+    ],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked manually (ingest <source>, lint <scope>) or by an orchestrator after a non-trivial specialist briefing (query-as-write). Nightly lint can be wired via a scheduled trigger. Run the 10-session audit when a team orchestrator counts >=10 session log commits since the last audit."
+  }
+}

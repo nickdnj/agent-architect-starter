@@ -1,0 +1,49 @@
+{
+  "id": "migration-openclaw",
+  "name": "OpenClaw Migration",
+  "description": "Migrates an OpenClaw user's AgentSkills into Agent Architect's native SKILL.md + config.json format, one-way, with best-effort tool permission mapping",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 40,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": ["OpenClaw skill format", "AgentSkill-to-AA mapping", "MCP permission mapping"],
+    "capabilities": ["YAML frontmatter parsing", "AA config generation", "team grouping suggestion", "migration reporting"]
+  },
+
+  "mcp_servers": [],
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "_sessions/migration-openclaw/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md"
+    ]
+  },
+
+  "output": {
+    "folder": "outputs/migration/",
+    "formats": ["markdown", "json"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["setup-concierge"],
+    "provides_to": [],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when the user asks to migrate OpenClaw skills to Agent Architect (e.g., 'migrate my openclaw skills', 'import from openclaw', '/architect migrate-from-openclaw')"
+  }
+}

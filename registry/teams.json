@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-15",
+  "teams": [
+    {
+      "id": "starter",
+      "name": "Starter Team",
+      "folder": "teams/starter",
+      "member_count": 5,
+      "created": "2026-04-17",
+      "status": "active"
+    }
+  ]
+}

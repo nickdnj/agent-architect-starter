@@ -1,0 +1,39 @@
+{
+  "id": "{{BUCKET_ID}}",
+  "name": "{{BUCKET_NAME}}",
+  "description": "{{BUCKET_DESCRIPTION}}",
+  "version": "1.0",
+  "created": "{{CREATED_DATE}}",
+
+  "content_type": "documents",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "files/",
+      "file_types": ["pdf", "docx", "md", "txt"],
+      "description": "Local document files"
+    },
+    {
+      "type": "local",
+      "path": "${GOOGLE_DRIVE_PATH}",
+      "description": "Google Drive synced folder (via Mac Google Drive app)"
+    }
+  ],
+
+  "organization": {
+    "categories": {{CATEGORIES}},
+    "naming_convention": "{{NAMING_CONVENTION}}"
+  },
+
+  "access_control": {
+    "default_level": "read-only",
+    "allowed_agents": {{ALLOWED_AGENTS}},
+    "allowed_teams": {{ALLOWED_TEAMS}}
+  },
+
+  "metadata": {
+    "document_count": 0,
+    "last_updated": "{{CREATED_DATE}}"
+  }
+}

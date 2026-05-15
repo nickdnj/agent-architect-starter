@@ -1,0 +1,66 @@
+{
+  "id": "{{TEAM_ID}}",
+  "name": "{{TEAM_NAME}}",
+  "description": "{{TEAM_DESCRIPTION}}",
+  "version": "1.0",
+  "created": "{{CREATED_DATE}}",
+
+  "purpose": "Project team that executes defined deliverables with clear milestones and outputs",
+
+  "members": [
+    {
+      "agent_id": "{{MEMBER_1_ID}}",
+      "role": "{{MEMBER_1_ROLE}}",
+      "context_override": null
+    },
+    {
+      "agent_id": "{{MEMBER_2_ID}}",
+      "role": "{{MEMBER_2_ROLE}}",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": ["{{TEAM_ID}}-workspace", "{{TEAM_ID}}-requirements"],
+    "outputs_folder": "teams/{{TEAM_ID}}/outputs",
+    "wiki_home": "teams/{{TEAM_ID}}/",
+    "_note": "wiki_home is the team's curated knowledge surface. _team.md lives at the root. Sessions log to _sessions/."
+  },
+
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 50 },
+    "routing": {
+      "general": ["{{MEMBER_1_ID}}"]
+    },
+    "delegation_strategy": "Route requests to the specialist whose expertise best matches the task. Delegate via Task() to keep specialist context isolated.",
+    "session_summary": {
+      "enabled": true,
+      "output_path": "context-buckets/session-logs/files/"
+    },
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with Nick (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`~/Workspaces/wiki/teams/{{TEAM_ID}}/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order — newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line — what Nick requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during the nightly lint to promote wiki-worthy content to permanent pages.\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "milestone-based",
+    "output_sharing": "summarized",
+    "notification_email": "{{NOTIFICATION_EMAIL}}"
+  },
+
+  "workflow": {
+    "phases": [
+      "Requirements gathering",
+      "Planning",
+      "Execution",
+      "Review",
+      "Delivery"
+    ],
+    "human_checkpoints": ["After planning", "Before delivery"]
+  },
+
+  "deliverables": {
+    "tracking": "teams/{{TEAM_ID}}/deliverables.json",
+    "output_formats": ["markdown", "pdf"]
+  }
+}

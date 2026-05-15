@@ -1,0 +1,66 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Generated Claude Code agents and skills (regenerate with /sync-agents)
+.claude/agents/*.md
+!.claude/agents/.gitkeep
+.claude/skills/*/SKILL.md
+!.claude/skills/.gitkeep
+# Hand-crafted skills (not generated, should be committed)
+!.claude/skills/voice-local/SKILL.md
+!.claude/skills/end-voice-local/SKILL.md
+!.claude/skills/wrap/SKILL.md
+
+# Local settings (keep template, ignore local overrides)
+.claude/settings.local.json
+
+# Context bucket content (backed up via Google Drive)
+context-buckets/*/files/
+!context-buckets/*/files/.gitkeep
+
+# Agent and team outputs (generated content)
+agents/*/reports/
+agents/*/outputs/
+teams/*/outputs/
+
+# Self-improvement loop (ephemeral data, not versioned)
+agents/*/feedback.jsonl
+agents/*/*.proposed
+
+# Top-level outputs
+outputs/
+
+# Generated data (FTS5 database)
+data/
+.gstack/
+
+# Saltwater AI Ads — large local-only assets (3.5GB ad library zip from Joe + extracted source)
+teams/personal-assistant/workspace/saltwater-ads-poc/source/
+
+# Saltwater AI Ads — confidential business data (raw TW API dumps); analysis .md files stay tracked
+docs/saltwater-ads/baseline-data/*.json
+
+# Firebase deployment artifacts (regenerated on deploy)
+docs/saltwater-ads/prototype/.firebase/
+

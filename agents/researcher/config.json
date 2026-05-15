@@ -1,0 +1,53 @@
+{
+  "id": "researcher",
+  "name": "Researcher",
+  "description": "Web research specialist that produces structured, sourced research briefings",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": ["web research", "information synthesis", "source evaluation"],
+    "capabilities": ["web search", "web fetch", "structured briefing"]
+  },
+
+  "mcp_servers": [],
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "spine/network/",
+      "teams/starter/",
+      "projects/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/starter/_sessions/researcher/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/starter/_team.md"
+    ]
+  },
+
+  "output": {
+    "folder": "outputs/research/",
+    "formats": ["markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["writer"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when the user asks a factual research question or when another agent needs sourced evidence"
+  }
+}

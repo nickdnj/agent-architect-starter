@@ -1,0 +1,40 @@
+{
+  "id": "{{BUCKET_ID}}",
+  "name": "{{BUCKET_NAME}}",
+  "description": "{{BUCKET_DESCRIPTION}}",
+  "version": "1.0",
+  "created": "{{CREATED_DATE}}",
+
+  "content_type": "codebase",
+
+  "sources": [
+    {
+      "type": "local",
+      "path": "{{CODEBASE_PATH}}",
+      "description": "Local codebase directory"
+    },
+    {
+      "type": "git",
+      "repository": "{{GIT_REPO_URL}}",
+      "branch": "{{GIT_BRANCH}}",
+      "sync_mode": "on-access",
+      "description": "Git repository"
+    }
+  ],
+
+  "codebase_info": {
+    "language": "{{PRIMARY_LANGUAGE}}",
+    "framework": "{{FRAMEWORK}}",
+    "entry_points": {{ENTRY_POINTS}}
+  },
+
+  "access_control": {
+    "default_level": "read-only",
+    "allowed_agents": {{ALLOWED_AGENTS}},
+    "allowed_teams": {{ALLOWED_TEAMS}}
+  },
+
+  "metadata": {
+    "last_updated": "{{CREATED_DATE}}"
+  }
+}

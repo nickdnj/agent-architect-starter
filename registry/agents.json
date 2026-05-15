@@ -1,0 +1,54 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-05-15",
+  "agents": [
+    {
+      "id": "setup-concierge",
+      "name": "Setup Concierge",
+      "folder": "agents/setup-concierge",
+      "teams": [
+        "starter"
+      ],
+      "created": "2026-04-17",
+      "status": "active"
+    },
+    {
+      "id": "researcher",
+      "name": "Researcher",
+      "folder": "agents/researcher",
+      "teams": [
+        "starter"
+      ],
+      "created": "2026-04-17",
+      "status": "active"
+    },
+    {
+      "id": "writer",
+      "name": "Writer",
+      "folder": "agents/writer",
+      "teams": [
+        "starter"
+      ],
+      "created": "2026-04-17",
+      "status": "active"
+    },
+    {
+      "id": "wiki-ingest",
+      "name": "Wiki Ingest",
+      "folder": "agents/wiki-ingest",
+      "teams": [
+        "starter"
+      ],
+      "created": "2026-05-14",
+      "status": "active"
+    },
+    {
+      "id": "migration-openclaw",
+      "name": "OpenClaw Migration",
+      "folder": "agents/migration-openclaw",
+      "teams": [],
+      "created": "2026-04-17",
+      "status": "active"
+    }
+  ]
+}

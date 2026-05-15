@@ -1,0 +1,50 @@
+{
+  "id": "{{AGENT_ID}}",
+  "name": "{{AGENT_NAME}}",
+  "description": "{{AGENT_DESCRIPTION}}",
+  "version": "1.0",
+
+  "expertise": {
+    "domains": ["writing", "communications", "content-creation"],
+    "capabilities": ["drafting", "editing", "formatting", "tone-management"]
+  },
+
+  "mcp_servers": {{MCP_SERVERS}},
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/{{TEAM_ID}}/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/{{TEAM_ID}}/_sessions/{{AGENT_ID}}/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/{{TEAM_ID}}/_team.md"
+    ]
+  },
+
+  "context_buckets": {
+    "assigned": {{CONTEXT_BUCKETS}},
+    "access_level": "read-only",
+    "_note": "Only for RAG buckets (FTS5 / pgvector). Curated knowledge lives in wiki_access."
+  },
+
+  "output": {
+    "folder": "{{OUTPUT_FOLDER}}",
+    "formats": ["markdown", "html"],
+    "briefing_folder": "{{BRIEFING_FOLDER}}"
+  },
+
+  "collaboration": {
+    "can_request_from": {{CAN_REQUEST_FROM}},
+    "provides_to": {{PROVIDES_TO}},
+    "handoff_format": "full-output"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when written content is needed"
+  }
+}

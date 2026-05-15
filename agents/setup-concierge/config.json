@@ -1,0 +1,51 @@
+{
+  "id": "setup-concierge",
+  "name": "Setup Concierge",
+  "description": "First-run onboarding specialist that walks new users through configuring their first MCP server (Gmail by default) end-to-end",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 30,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": ["MCP server configuration", "Google Cloud OAuth setup", "Claude Code onboarding"],
+    "capabilities": ["guided setup", "credential wiring", "connection testing", "handoff to team"]
+  },
+
+  "mcp_servers": [],
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "teams/starter/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/starter/_sessions/setup-concierge/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/starter/_team.md"
+    ]
+  },
+
+  "output": {
+    "folder": "outputs/setup/",
+    "formats": ["markdown"]
+  },
+
+  "collaboration": {
+    "can_request_from": [],
+    "provides_to": ["researcher", "writer"],
+    "handoff_format": "structured-summary"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked on first run or when the user asks to set up an MCP server / connect a new tool"
+  }
+}

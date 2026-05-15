@@ -1,0 +1,15 @@
+{
+  "name": "agent-architect",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Master agent for building and managing AI agent teams",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "generate": "node scripts/generate-agents.js",
+    "generate:cowork": "node scripts/generate-cowork.js"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.4"
+  }
+}

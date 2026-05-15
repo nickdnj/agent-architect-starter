@@ -1,0 +1,24 @@
+{
+  "schema_v": 1,
+  "description": "Structured feedback schema for the self-improving agent loop. Single source of truth — referenced by generators and the Improver agent.",
+  "fields": {
+    "required": {
+      "schema_v": { "type": "integer", "description": "Schema version number" },
+      "ts": { "type": "string", "format": "ISO-8601", "description": "Timestamp of feedback entry" },
+      "agent": { "type": "string", "description": "Agent ID that performed the task" },
+      "task": { "type": "string", "description": "Brief description of what was asked" },
+      "outcome": { "type": "enum", "values": ["success", "partial", "failure"], "description": "Task outcome" }
+    },
+    "optional": {
+      "what_worked": { "type": "string", "description": "Specific behaviors that went well" },
+      "what_struggled": { "type": "string", "description": "Specific behaviors that were problematic" },
+      "duration_s": { "type": "integer", "description": "Time spent on task in seconds" },
+      "user_edits": { "type": "string", "description": "What the user changed after the agent finished (Phase 2)" },
+      "improver_rejection": { "type": "string", "description": "Why a prior improvement proposal was rejected" }
+    }
+  },
+  "special_task_values": {
+    "improver-approved": "Logged when an Improver proposal is approved and applied",
+    "improver-rejected": "Logged when an Improver proposal is rejected by the user"
+  }
+}

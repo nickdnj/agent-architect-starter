@@ -1,0 +1,71 @@
+{
+  "id": "starter",
+  "skill_alias": "starter",
+  "name": "Starter Team",
+  "description": "Example team shipped with Agent Architect — Setup Concierge for first-run onboarding (wiki bootstrap + first MCP), Researcher and Writer pair that demonstrates delegation, Wiki Ingest as sole writer to the wiki knowledge layer, and an OpenClaw Migration specialist for users coming from OpenClaw",
+  "version": "1.2",
+  "created": "2026-04-17",
+
+  "members": [
+    {
+      "agent_id": "setup-concierge",
+      "role": "First-run onboarding — walks the user through wiki bootstrap and connecting their first MCP server",
+      "context_override": null
+    },
+    {
+      "agent_id": "researcher",
+      "role": "Web research specialist — produces structured, sourced briefings",
+      "context_override": null
+    },
+    {
+      "agent_id": "writer",
+      "role": "Writing specialist — turns briefings and notes into polished documents",
+      "context_override": null
+    },
+    {
+      "agent_id": "wiki-ingest",
+      "role": "Sole writer to the wiki — ingest raw material, promote briefings, lint for drift",
+      "context_override": null
+    },
+    {
+      "agent_id": "migration-openclaw",
+      "role": "OpenClaw migration — reads the user's OpenClaw AgentSkills and converts them to Agent Architect format",
+      "context_override": null
+    }
+  ],
+
+  "shared_context": {
+    "buckets": [],
+    "outputs_folder": "teams/starter/outputs"
+  },
+
+  "orchestration": {
+    "mode": "thin-orchestrator",
+    "execution": { "model": "opus", "max_turns": 40 },
+    "routing": {
+      "onboarding": ["setup-concierge"],
+      "mcp-setup": ["setup-concierge"],
+      "wiki-bootstrap": ["setup-concierge"],
+      "first-run": ["setup-concierge"],
+      "research": ["researcher"],
+      "writing": ["writer"],
+      "research-and-write": ["researcher", "writer"],
+      "wiki-ingest": ["wiki-ingest"],
+      "wiki-lint": ["wiki-ingest"],
+      "promote-to-wiki": ["wiki-ingest"],
+      "ingest": ["wiki-ingest"],
+      "openclaw-migration": ["migration-openclaw"],
+      "migrate": ["migration-openclaw"],
+      "import-openclaw": ["migration-openclaw"],
+      "general": ["researcher"]
+    },
+    "delegation_strategy": "Route first-run, wiki-bootstrap, and MCP setup requests to the Setup Concierge. Route pure research questions to the Researcher. Route pure writing tasks to the Writer. For combined 'research this and turn it into a [report/proposal/email]' requests, run Researcher first and pass the briefing to the Writer. Route any wiki ingest, lint, or 'promote this to a permanent page' request to Wiki Ingest. Route any 'migrate from OpenClaw', 'import my OpenClaw skills', or similar requests to the OpenClaw Migration specialist.\n\n**Claude 4.7 delegation note:** Opus 4.7 defaults to fewer subagents and fewer tool calls than prior models. Counteract that here — when a request matches a specialist's domain, delegate rather than answering from training knowledge. Handle inline ONLY for: routing/clarifying questions back to the user, trivial lookups in already-loaded context, or synthesizing specialist briefings into the final response. Everything else goes to a specialist.",
+    "orchestrator_instructions": "\n\n## Wiki Session Log (MANDATORY)\n\nAfter every substantive interaction with the user (anything that lasted more than a quick yes/no exchange OR produced an artifact, decision, or specialist briefing), append a one-paragraph summary to:\n\n`${WIKI_REPO}/teams/starter/_sessions/YYYY-MM-DD.md`\n\n(Create the file if it does not exist. Append in chronological order — newest at the bottom of the day's file. Use today's date in YYYY-MM-DD format.)\n\nThe summary should cover:\n- **Asked:** one line — what the user requested\n- **Specialists:** which agents invoked (if any)\n- **Output:** key artifacts produced, paths to files created, decisions made\n- **Wiki-ingest candidates:** any facts surfaced that should become permanent wiki pages (flag explicitly for next ingest pass)\n\nThis is the continuous session-logging surface that the `wiki-ingest` agent reads during nightly lint to promote wiki-worthy content to permanent pages. **The wiki replaces ad-hoc session continuity — but only if you write to it.**\n\nSkip the session log for trivial exchanges: pure yes/no answers, single-fact lookups, conversational meta-questions with no work product.\n\n## Briefing → Wiki Promotion\n\nWhen a specialist returns a briefing that contains durable knowledge (a decision, a confirmed fact, a roster change, a working norm), propose `wiki-ingest --operation query-as-write` to lift the durable subset into a permanent wiki page. The briefing itself stays in the team workspace as working memory; the curated page is what future sessions read.\n"
+  },
+
+  "collaboration_rules": {
+    "coordination_mode": "orchestrated",
+    "handoff_protocol": "task-delegation",
+    "output_sharing": "summarized"
+  }
+}

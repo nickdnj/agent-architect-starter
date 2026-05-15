@@ -1,0 +1,52 @@
+{
+  "id": "writer",
+  "name": "Writer",
+  "description": "Writing specialist that turns research briefings and notes into polished prose in the target format",
+  "version": "1.0",
+
+  "agent_type": "specialist",
+
+  "execution": {
+    "context": "fork",
+    "max_turns": 20,
+    "model": "sonnet"
+  },
+
+  "expertise": {
+    "domains": ["writing", "editing", "format conventions"],
+    "capabilities": ["report writing", "email drafting", "proposal writing", "memo writing"]
+  },
+
+  "mcp_servers": [],
+
+  "wiki_access": {
+    "repo_root": "${WIKI_REPO}",
+    "read": [
+      "spine/preferences/",
+      "spine/network/",
+      "teams/starter/"
+    ],
+    "write_via_ingest": [],
+    "session_log": "teams/starter/_sessions/writer/",
+    "always_load": [
+      "spine/preferences/seven-habits-of-effective-agents.md",
+      "teams/starter/_team.md"
+    ]
+  },
+
+  "output": {
+    "folder": "outputs/writing/",
+    "formats": ["markdown", "text"]
+  },
+
+  "collaboration": {
+    "can_request_from": ["researcher"],
+    "provides_to": [],
+    "handoff_format": "full-output"
+  },
+
+  "trigger": {
+    "type": "on-demand",
+    "description": "Invoked when the user wants a polished document produced from research, notes, or drafts"
+  }
+}
