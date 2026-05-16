@@ -22,6 +22,12 @@ npm-debug.log*
 .env.local
 .env.*.local
 
+# OAuth credentials and tokens (never commit these)
+credentials.json
+token.json
+**/credentials.json
+**/token.json
+
 # Generated Claude Code agents and skills (regenerate with /sync-agents)
 .claude/agents/*.md
 !.claude/agents/.gitkeep
