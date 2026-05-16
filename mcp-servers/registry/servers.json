@@ -32,7 +32,7 @@
       "wrapper_pattern": "mcp-gdrive-{account}.sh",
       "status": "deprecated",
       "deprecated_date": "2026-01-25",
-      "deprecated_reason": "Replaced by local file access via Mac Google Drive sync for reduced overhead and increased speed"
+      "deprecated_reason": "Replaced by local file access via Mac Google Drive sync for files in the synced tree (faster, no network). For arbitrary Drive files outside the sync, use the hosted 'claude.ai Google Drive' connector (Anthropic-owned OAuth, configured via /mcp menu, tools namespaced mcp__claude_ai_Google_Drive__*). Do NOT reinstate @isaacphi/mcp-gdrive: its bundled OAuth client is locked to the publisher's Workspace org and returns org_internal 403s for external accounts."
     },
     "google-docs": {
       "name": "Google Docs MCP Server",
